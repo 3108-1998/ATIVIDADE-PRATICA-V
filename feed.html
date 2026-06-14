@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feed — Tweeter</title>
+  <link rel="stylesheet" href="styles/styles.css" />
+</head>
+<body>
+
+  <div class="app-layout">
+    <header class="app-header">
+      <span class="logo">🐦 Tweeter</span>
+      <nav>
+        <a href="feed.html">Início</a>
+        <a href="#">Buscar</a>
+        <a href="#">Perfil</a>
+      </nav>
+      <button class="btn-logout" onclick="sair()">Sair</button>
+    </header>
+
+    <main class="feed-column">
+
+      <section class="new-post">
+        <img src="iimg/avatar.jpg" alt="Seu avatar" class="avatar"
+          onerror="this.src='https://ui-avatars.com/api/?name=Eu&background=7c3aed&color=fff&size=46'" />
+
+        <div class="new-post-form">
+          <div class="post-user-info">
+            <span class="name">Nathalia Michelly</span>
+            <span class="username">@nathaliamichelly</span>
+          </div>
+          <textarea id="novo-post-texto" placeholder="O que está acontecendo?" maxlength="280"></textarea>
+          <div class="post-actions-row">
+            <button class="btn-post" onclick="publicar()">Publicar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- POSTS -->
+      <section id="lista-posts">
+
+        <article class="post-card">
+          <img src="iimg/avatar.jpg" alt="Avatar" class="avatar"
+            onerror="this.src='https://ui-avatars.com/api/?name=Ana+Silva&background=06b6d4&color=fff&size=46'" />
+          <div class="post-body">
+            <div class="post-meta">
+              <span class="name">Raphael Lopes</span>
+              <span class="username">@raphalopes</span>
+            </div>
+            <p class="post-text">Quero saber de nada. 🎉</p>
+            <div class="post-reactions">
+              <button class="reaction-btn like" onclick="curtir(this)">♡ <span>12</span></button>
+              <button class="reaction-btn comment">💬 <span>3</span></button>
+            </div>
+          </div>
+        </article>
+
+        <article class="post-card">
+          <img src="iimg/avatar.jpg" alt="Avatar" class="avatar"
+            onerror="this.src='https://ui-avatars.com/api/?name=Carlos+M&background=f472b6&color=fff&size=46'" />
+          <div class="post-body">
+            <div class="post-meta">
+              <span class="name">Luiz Andre.</span>
+              <span class="username">@dedebarbosa</span>
+            </div>
+            <p class="post-text">A vida é bela. 🚀</p>
+            <div class="post-reactions">
+              <button class="reaction-btn like" onclick="curtir(this)">♡ <span>27</span></button>
+              <button class="reaction-btn comment">💬 <span>8</span></button>
+            </div>
+          </div>
+        </article>
+
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function publicar() {
+      const texto = document.getElementById('novo-post-texto').value.trim();
+      if (!texto) { alert('Escreva algo para publicar.'); return; }
+
+      const lista = document.getElementById('lista-posts');
+      const post = document.createElement('article');
+      post.className = 'post-card';
+      post.innerHTML = `
+        <img src="iimg/avatar.jpg" alt="Avatar" class="avatar"
+          onerror="this.src='https://ui-avatars.com/api/?name=Eu&background=7c3aed&color=fff&size=46'" />
+        <div class="post-body">
+          <div class="post-meta">
+            <span class="name">Seu Nome</span>
+            <span class="username">@seu_usuario</span>
+          </div>
+          <p class="post-text">${escapeHtml(texto)}</p>
+          <div class="post-reactions">
+            <button class="reaction-btn like" onclick="curtir(this)">♡ <span>0</span></button>
+            <button class="reaction-btn comment">💬 <span>0</span></button>
+          </div>
+        </div>
+      `;
+      lista.prepend(post);
+      document.getElementById('novo-post-texto').value = '';
+    }
+
+    function curtir(btn) {
+      const span = btn.querySelector('span');
+      const liked = btn.dataset.liked === 'true';
+      span.textContent = liked ? parseInt(span.textContent) - 1 : parseInt(span.textContent) + 1;
+      btn.dataset.liked = !liked;
+      btn.style.color = liked ? '' : '#ec4899';
+    }
+
+    function sair() { window.location.href = 'index.html'; }
+
+    function escapeHtml(str) {
+      return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+    }
+  </script>
+
+</body>
+</html>
